@@ -5,6 +5,7 @@ library(kernlab)
 ```
 
 ```{r}
+# We create a function to generate random points on a circle with noise
 makecircle <- function(size,radius,noise,center,color,pch){
   r <- rlnorm(size, meanlog = log(radius), sdlog = noise)
   theta <- runif(size,0,2*pi)
@@ -17,7 +18,14 @@ makecircle <- function(size,radius,noise,center,color,pch){
 
 
 ```{r}
-plot(0,type='n',axes=FALSE,ann=FALSE,xlim=c(-3,3),ylim=c(-2,2))
+# We plot the points with the true clusters
+plot(0,type='n',
+     axes=FALSE,
+     xlab="",
+     ylab="",
+     xlim=c(-3,3),
+     ylim=c(-2,2),
+     main="Ground Truth")
 cir1 <- makecircle(size=150,
            radius=2,
            noise=0.08,
@@ -34,16 +42,20 @@ cir2 <- makecircle(size=150,
 ```
 
 ```{r}
+# Apply Spectral Clustering and regular K-means on the full dataset
 circles <- rbind(cir1,cir2)
 sc <- kernlab::specc(circles, centers = 2)
 k.means <- kmeans(circles,centers = 2)
 ```
 
 ```{r}
+# Plot the results
 plot(circles,
      col=sc,
      pch=20,
      axes=FALSE,
+     xlab="",
+     ylab="",
      xlim=c(-3,3),
      ylim=c(-3,3),
      main="Spectral Clustering")
@@ -52,6 +64,8 @@ plot(circles,
      col=k.means$cluster,
      pch=20,
      axes=FALSE,
+     xlab="",
+     ylab="",
      xlim=c(-3,3),
      ylim=c(-3,3),
      main="Regular K-means")
